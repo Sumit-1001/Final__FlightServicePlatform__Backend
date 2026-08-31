@@ -16,14 +16,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Address {
 
-	
-   
 	private int houseNo;
 	private String state;
 	private String country;
 	@Digits(integer = 6, fraction = 0)
 	private int pinCode;
-	
-	
 	
 }

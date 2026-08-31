@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.client.Admin1FeignClient;
 import com.example.demo.dto.FlightDTO;
+import com.example.demo.dto.ScheduleRequestDTO;
 import com.example.demo.entity.FlightSchedule;
 import com.example.demo.exception.FlightNotFoundException;
+import com.example.demo.exception.ScheduleAlreadyExistException;
 import com.example.demo.exception.ScheduleNotFoundException;
 import com.example.demo.exception.SeatNotAvailableException;
 import com.example.demo.repository.FlightSchduleRepository;
@@ -19,30 +21,44 @@ import jakarta.transaction.Transactional;
 
 
 @Service
-public class FlightScheduleServiceImpl implements FlightScheduleService {
+public class FlightScheduleServiceImpl implements IFlightScheduleService {
  @Autowired 
     FlightSchduleRepository repo;
     
     @Autowired
     Admin1FeignClient feignClient;
 	
-	@Override
-	public FlightSchedule addSchedule(FlightSchedule schedule) {
-		
-		FlightDTO flight =feignClient.getFlightById(schedule.getFlightId()); // flight id Will come from Admin-1
- 
-				if(flight == null) {
-				throw new FlightNotFoundException("Flight not found");
-				}
-				
-				// Setting flight Class Seats-> to TotalCapacity and  Available Seats for initial stage  
-				//Source and Destination taken from flight class
-				schedule.setTotalCapacity(flight.getTotalSeats());
-				schedule.setAvailableSeats(flight.getTotalSeats());
-				schedule.setSource(flight.getSource());
-				schedule.setDestination(flight.getDestination());
-	           return repo.save(schedule);				
-	}
+    @Override
+    public FlightSchedule addSchedule(ScheduleRequestDTO schedule) {
+
+        FlightDTO flight = feignClient.getFlightById(schedule.getFlightId());
+
+        if (flight == null) {
+            throw new FlightNotFoundException("Flight not found");
+        }
+        
+        if(repo.existsByFlightId(schedule.getFlightId()))
+        {
+        	throw new ScheduleAlreadyExistException("Schedule already exist for this flight !!");
+        }
+
+        FlightSchedule newFlightSchedule = new FlightSchedule();
+
+        
+        newFlightSchedule.setFlightId(schedule.getFlightId());
+        newFlightSchedule.setTotalCapacity(flight.getTotalSeats());
+        newFlightSchedule.setAvailableSeats(flight.getTotalSeats());
+        newFlightSchedule.setSource(flight.getSource());
+        newFlightSchedule.setDestination(flight.getDestination());
+
+        
+        newFlightSchedule.setDepartureDate(schedule.getDepartureDate());
+        newFlightSchedule.setDepartureTime(schedule.getDepartureTime());
+        newFlightSchedule.setArrivalTime(schedule.getArrivalTime());
+        newFlightSchedule.setPrice(schedule.getPrice());
+
+        return repo.save(newFlightSchedule);
+    }
 
 	@Override
 	public FlightSchedule getScheduleById(int scheduleId) {

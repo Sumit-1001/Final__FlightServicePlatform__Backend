@@ -4,8 +4,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+import com.edu.test.dto.FlightDTO;
+import com.edu.test.dto.UserRequestDTO;
 import com.edu.test.entity.Address;
 import com.edu.test.entity.User;
+import com.edu.test.enums.DestinationLocation;
+import com.edu.test.enums.SourceLocation;
 import com.edu.test.exception.UserAlreadyExistsException;
 import com.edu.test.exception.UserNotFoundException;
 
@@ -13,8 +17,7 @@ import com.edu.test.exception.UserNotFoundException;
 public interface IUserService  {
 
 	
-	public String addNewUser(User user) throws UserAlreadyExistsException;
-	
+	public String addNewUser(UserRequestDTO user) throws UserAlreadyExistsException;
 	
 	public List<User> getAllUser();
 	
@@ -31,4 +34,17 @@ public interface IUserService  {
 	public String DeleteByUserId(int UserId)throws UserNotFoundException;
 	
 	public String addUserAddress(Address userAddress ,int UserId)throws UserNotFoundException;
-}
+
+
+	    List<FlightDTO> getAllFlights();
+
+	    FlightDTO getFlightById(Integer flightId);
+
+	    List<FlightDTO> getFlightsBySource(SourceLocation source);
+
+	    List<FlightDTO> getFlightsByDestination(DestinationLocation destination);
+
+	    List<FlightDTO> getFlightsBySourceAndDestination(
+	            SourceLocation source,
+	            DestinationLocation destination);
+	}

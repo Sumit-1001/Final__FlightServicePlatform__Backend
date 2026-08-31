@@ -14,20 +14,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.ScheduleRequestDTO;
 import com.example.demo.entity.FlightSchedule;
-import com.example.demo.service.FlightScheduleService;
+import com.example.demo.service.IFlightScheduleService;
+
+import jakarta.transaction.Transactional;
 
 @RestController
 @RequestMapping("admin2/schedules")
 public class FlightScheduleController {
 	
-	@Autowired FlightScheduleService flightScheduleService;
+	@Autowired IFlightScheduleService flightScheduleService;
 	
 	
 	// Create Schedule
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/addschedules")
-	public FlightSchedule addSchedule(@RequestBody FlightSchedule schedule) {
+	@Transactional
+	public FlightSchedule addSchedule(@RequestBody ScheduleRequestDTO schedule) {
 		return flightScheduleService.addSchedule(schedule);
 	}
 	

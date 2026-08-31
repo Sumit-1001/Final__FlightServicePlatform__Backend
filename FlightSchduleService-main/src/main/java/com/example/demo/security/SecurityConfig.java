@@ -25,7 +25,15 @@ public class SecurityConfig {
                         .requestMatchers("/api/public/**").permitAll()
                         .requestMatchers("/admin2/schedules/**").hasRole("ADMIN")
                         .requestMatchers("/api/employee/**").hasRole("employee")
-                        .anyRequest().authenticated())
+                        .requestMatchers(
+                        	    "/swagger-ui/**",
+                        	    "/swagger-ui.html",
+                        	    "/v3/api-docs/**",
+                        	    "/v3/api-docs",
+                        	    "/webjars/**"
+                        	).permitAll()
+                        .anyRequest()
+                        .authenticated())
                 .httpBasic(basic -> {});
  
         return http.build();

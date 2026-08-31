@@ -23,5 +23,7 @@ public interface FlightSchduleRepository extends JpaRepository<FlightSchedule, I
 	List<FlightSchedule> findByDestination(String destination);
 	
 	List<FlightSchedule> findByDepartureDateAndDestination(LocalDate departureDate,String destination);
+	
+	boolean existsByFlightId(int flightId);
  
 }

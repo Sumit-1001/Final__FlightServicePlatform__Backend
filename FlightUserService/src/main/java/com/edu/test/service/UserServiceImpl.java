@@ -6,8 +6,13 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edu.test.client.FlightFeignClient;
+import com.edu.test.dto.FlightDTO;
+import com.edu.test.dto.UserRequestDTO;
 import com.edu.test.entity.Address;
 import com.edu.test.entity.User;
+import com.edu.test.enums.DestinationLocation;
+import com.edu.test.enums.SourceLocation;
 import com.edu.test.exception.UserAlreadyExistsException;
 import com.edu.test.exception.UserNotFoundException;
 import com.edu.test.repository.IUserRepository;
@@ -18,24 +23,29 @@ public class UserServiceImpl implements IUserService {
 	@Autowired
 	IUserRepository userRepository;
 
-	@Override
-	public String addNewUser(User user) throws UserAlreadyExistsException {
+	@Autowired
+	private FlightFeignClient flightFeignClient;
 	
-		boolean flag = userRepository.findAll()
-				.stream()
-				.anyMatch(c -> c.getEmail()
-						.equalsIgnoreCase(user.getEmail()));
-		
-		if(flag) 
-		{
-			throw  new  UserAlreadyExistsException("User already Exist !!!");
-		}
-		
-		else
-		{
-			userRepository.save(user);
-		}
-		return "User info saved of userId : "+user.getUserId();
+	@Override
+	public String addNewUser(UserRequestDTO user) throws UserAlreadyExistsException {
+
+	    boolean flag = userRepository.findAll()
+	            .stream()
+	            .anyMatch(c -> c.getEmail().equalsIgnoreCase(user.getEmail()));
+
+	    if (flag) {
+	        throw new UserAlreadyExistsException("User already exists !!!");
+	    }
+
+	    User newUser = new User();
+	    newUser.setUserName(user.getUserName());
+	    newUser.setEmail(user.getEmail());
+	    newUser.setPhoneNumber(user.getPhoneNumber());
+	    newUser.setPermanentAddress(user.getPermanentAddress());
+
+	    userRepository.save(newUser);
+
+	    return "User info saved successfully. UserId : " + newUser.getUserId();
 	}
 
 	@Override
@@ -90,7 +100,7 @@ public class UserServiceImpl implements IUserService {
 		
         boolean flag = userRepository.findAll().stream().anyMatch(c -> c.getUserId()==UserId);
 				
-		
+
 		if(!flag)
 		{
 			throw new UserNotFoundException("User doesn't exist of UserId : "+UserId);
@@ -104,8 +114,7 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public String addUserAddress(Address userAddress ,int UserId) throws UserNotFoundException{
        boolean flag = userRepository.findAll().stream().anyMatch(c -> c.getUserId()==UserId);
-				
-		
+       
 		if(!flag)
 		{
 			throw new UserNotFoundException("User doesn't exist of UserId : "+UserId);
@@ -163,11 +172,38 @@ public class UserServiceImpl implements IUserService {
 		
 		return user1;
 	}
-	
-	
-	
-	
-	
+	@Override
+	public List<FlightDTO> getAllFlights() {
+	    return flightFeignClient.getAllFlights();
+	}
+
+	@Override
+	public FlightDTO getFlightById(Integer flightId) {
+	    return flightFeignClient.getFlightById(flightId);
+	}
+
+	@Override
+	public List<FlightDTO> getFlightsBySource(SourceLocation source) {
+	    return flightFeignClient.getFlightsBySource(source);
+	}
+
+	@Override
+	public List<FlightDTO> getFlightsByDestination(
+	        DestinationLocation destination) {
+
+	    return flightFeignClient.getFlightsByDestination(destination);
+	}
+
+	@Override
+	public List<FlightDTO> getFlightsBySourceAndDestination(
+	        SourceLocation source,
+	        DestinationLocation destination) {
+
+	    return flightFeignClient
+	            .getFlightsBySourceAndDestination(
+	                    source,
+	                    destination);
+	}
 	
 	
 }

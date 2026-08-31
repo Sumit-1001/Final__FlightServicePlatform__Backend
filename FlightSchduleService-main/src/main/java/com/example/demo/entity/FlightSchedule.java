@@ -32,8 +32,9 @@ public class FlightSchedule {
 	//flight 
 	private String source;
 	private String destination;
+	private double price;
 	public FlightSchedule(int flightId, LocalDate departureDate, LocalTime departureTime, LocalTime arrivalTime,
-			int availableSeats, int totalCapacity, String source, String destination) {
+			int availableSeats, int totalCapacity, String source, String destination,double price) {
 		super();
 		this.flightId = flightId;
 		this.departureDate = departureDate;
@@ -43,9 +44,8 @@ public class FlightSchedule {
 		this.totalCapacity = totalCapacity;
 		this.source = source;
 		this.destination = destination;
+		this.price=price;
 	}
-	
-	
 	}
 	
 	

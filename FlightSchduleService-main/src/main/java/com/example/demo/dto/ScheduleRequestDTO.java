@@ -8,10 +8,9 @@ import lombok.Data;
 @Data
 public class ScheduleRequestDTO {
 	private int flightId;
-	private LocalDate arrivalDate;
 	private LocalDate departureDate;
 	private LocalTime departureTime;
 	private LocalTime arrivalTime;
 	private int availableSeats; 
-	private int price;
+	private double price;
 }

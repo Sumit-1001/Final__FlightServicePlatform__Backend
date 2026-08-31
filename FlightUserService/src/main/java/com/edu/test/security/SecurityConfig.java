@@ -27,6 +27,13 @@ package com.edu.test.security;
 	                        .requestMatchers("/api/public/**").hasRole("user")
 	                        .requestMatchers("/api/admin1/**").hasRole("admin")
 	                        .requestMatchers("/api/admin2/**").hasRole("employee")
+	                        .requestMatchers(
+	                        	    "/swagger-ui/**",
+	                        	    "/swagger-ui.html",
+	                        	    "/v3/api-docs/**",
+	                        	    "/v3/api-docs",
+	                        	    "/webjars/**"
+	                        	).permitAll()
 	                        .anyRequest().authenticated())
 	                .httpBasic(basic -> {});
 

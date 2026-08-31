@@ -5,12 +5,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.ScheduleRequestDTO;
 import com.example.demo.entity.FlightSchedule;
 
 @Service
-public interface FlightScheduleService {
-	
-	public FlightSchedule addSchedule(FlightSchedule schedule);
+public interface IFlightScheduleService {
+
+	public FlightSchedule addSchedule(ScheduleRequestDTO schedule);
 	
 	public FlightSchedule getScheduleById(int id);
 	

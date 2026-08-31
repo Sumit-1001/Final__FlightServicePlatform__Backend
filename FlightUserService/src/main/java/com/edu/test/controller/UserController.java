@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.edu.test.dto.FlightDTO;
+import com.edu.test.dto.UserRequestDTO;
 import com.edu.test.entity.Address;
 import com.edu.test.entity.User;
+import com.edu.test.enums.DestinationLocation;
+import com.edu.test.enums.SourceLocation;
 import com.edu.test.exception.UserAlreadyExistsException;
 import com.edu.test.exception.UserNotFoundException;
 import com.edu.test.service.IUserService;
@@ -40,7 +44,7 @@ public class UserController {
 	
 	@PostMapping("/addUser")
 	@Transactional
-	public ResponseEntity<String> addNewUser(@Valid @RequestBody User user)throws UserAlreadyExistsException
+	public ResponseEntity<String> addNewUser(@Valid @RequestBody UserRequestDTO user)throws UserAlreadyExistsException
 	{
 		String Notification = userService.addNewUser(user);
 				
@@ -119,5 +123,45 @@ public class UserController {
 	}
 	
 	
+	
+	@GetMapping("/flights")
+	public ResponseEntity<List<FlightDTO>> getAllFlights() {
+	    return ResponseEntity.ok(userService.getAllFlights());
+	}
+
+	@GetMapping("/flights/{flightId}")
+	public ResponseEntity<FlightDTO> getFlightById(
+	        @PathVariable Integer flightId) {
+
+	    return ResponseEntity.ok(
+	            userService.getFlightById(flightId));
+	}
+
+	@GetMapping("/flights/source/{source}")
+	public ResponseEntity<List<FlightDTO>> getFlightsBySource(
+	        @PathVariable SourceLocation source) {
+
+	    return ResponseEntity.ok(
+	            userService.getFlightsBySource(source));
+	}
+
+	@GetMapping("/flights/destination/{destination}")
+	public ResponseEntity<List<FlightDTO>> getFlightsByDestination(
+	        @PathVariable DestinationLocation destination) {
+
+	    return ResponseEntity.ok(
+	            userService.getFlightsByDestination(destination));
+	}
+
+	@GetMapping("/flights/search/{source}/{destination}")
+	public ResponseEntity<List<FlightDTO>> getFlightsBySourceAndDestination(
+	        @PathVariable SourceLocation source,
+	        @PathVariable DestinationLocation destination) {
+
+	    return ResponseEntity.ok(
+	            userService.getFlightsBySourceAndDestination(
+	                    source,
+	                    destination));
+	}
 	
 }
