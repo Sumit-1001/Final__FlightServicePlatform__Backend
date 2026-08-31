@@ -36,11 +36,11 @@ public class FlightScheduleController {
 	}
 	
 	// Get Schedule By Id
-	@GetMapping("/{id}")
-	public FlightSchedule getScheduleById(
-			@PathVariable int id) {
-			return flightScheduleService.getScheduleById(id);
-			} 
+	//@GetMapping("/{id}")
+//	public FlightSchedule getScheduleById(
+//			@PathVariable int id) {
+//			return flightScheduleService.getScheduleById(id);
+//			} 
 	
 	// Get All Schedules
 	@GetMapping

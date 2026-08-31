@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import com.flight.demo.enums.BookingStatus;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -30,10 +31,21 @@ public class Booking {
 
     private Integer seatsBooked;
 
-    private Double fare;
+
+    @Column(name = "total_fare")
+    private Double totalFare;
 
     @Enumerated(EnumType.STRING)
     private BookingStatus bookingStatus;
 
     private LocalDate bookingDate;
+    
+    
+    public Double getTotalFare() {
+        return totalFare;
+    }
+
+    public void setTotalFare(Double totalFare) {
+        this.totalFare = totalFare;
+    }
 }

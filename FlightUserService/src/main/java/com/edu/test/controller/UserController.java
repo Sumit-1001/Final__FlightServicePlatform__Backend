@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.edu.test.client.ScheduleFeignClient;
+import com.edu.test.dto.BookingDTO;
 import com.edu.test.dto.FlightDTO;
+import com.edu.test.dto.ScheduleDTO;
 import com.edu.test.dto.UserRequestDTO;
 import com.edu.test.entity.Address;
 import com.edu.test.entity.User;
 import com.edu.test.enums.DestinationLocation;
 import com.edu.test.enums.SourceLocation;
+import com.edu.test.exception.ScheduleNotFoundException;
 import com.edu.test.exception.UserAlreadyExistsException;
 import com.edu.test.exception.UserNotFoundException;
 import com.edu.test.service.IUserService;
@@ -164,4 +168,19 @@ public class UserController {
 	                    destination));
 	}
 	
+	@GetMapping("/api/public/user/bookings/{userId}")
+	public List<BookingDTO> getBookingsByUserId(
+	@PathVariable Integer userId)  throws UserNotFoundException{
+	return userService.getBookingsByUserId(userId);
+	}
+	
+	
+	@GetMapping("/api/public/schedules/{id}")
+	public ResponseEntity<ScheduleDTO> getScheduleById(
+	        @PathVariable int id)
+	        throws ScheduleNotFoundException {
+
+	    return ResponseEntity.ok(
+	            userService.getScheduleById(id));
+	}
 }

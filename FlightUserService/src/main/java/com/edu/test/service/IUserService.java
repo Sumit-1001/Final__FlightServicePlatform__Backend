@@ -4,12 +4,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+import com.edu.test.dto.BookingDTO;
 import com.edu.test.dto.FlightDTO;
+import com.edu.test.dto.ScheduleDTO;
 import com.edu.test.dto.UserRequestDTO;
 import com.edu.test.entity.Address;
 import com.edu.test.entity.User;
 import com.edu.test.enums.DestinationLocation;
 import com.edu.test.enums.SourceLocation;
+import com.edu.test.exception.ScheduleNotFoundException;
 import com.edu.test.exception.UserAlreadyExistsException;
 import com.edu.test.exception.UserNotFoundException;
 
@@ -47,4 +50,14 @@ public interface IUserService  {
 	    List<FlightDTO> getFlightsBySourceAndDestination(
 	            SourceLocation source,
 	            DestinationLocation destination);
+	    
+	    
+	    
+	    // booking check by id
+	    
+	    List<BookingDTO> getBookingsByUserId(Integer userId) throws UserNotFoundException;
+	    
+	    //find by scheduleid
+	    ScheduleDTO getScheduleById(int id)throws ScheduleNotFoundException ;
+	    
 	}

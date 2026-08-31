@@ -58,7 +58,7 @@ public class BookingServiceImpl implements IBookingService{
 		booking.setUserId(request.getUserId());
 		booking.setScheduleId(request.getScheduleId());
 		booking.setSeatsBooked(request.getNumberOfSeats());
-		booking.setFare(totalFare);
+		booking.setTotalFare(totalFare);
 		booking.setBookingStatus(BookingStatus.CONFIRMED);
 		booking.setBookingDate(LocalDate.now());
 		
@@ -73,7 +73,7 @@ public class BookingServiceImpl implements IBookingService{
 				user.getUserName(),
 				booking.getScheduleId(),
 				booking.getSeatsBooked(),
-				booking.getFare(),
+				booking.getTotalFare(),
 				booking.getBookingStatus()
 				);
 	}
@@ -92,14 +92,20 @@ public class BookingServiceImpl implements IBookingService{
 				user.getUserName(),
 				booking.getScheduleId(),
 				booking.getSeatsBooked(),
-				booking.getFare(),
+				booking.getTotalFare(),
 				booking.getBookingStatus());
 	}
 
 	@Override
 	public List<Booking> getBookingsByUser(Integer userId) {
-		// TODO Auto-generated method stub
-		return bookingRepository.findByUserId(userId);
+
+	    System.out.println("METHOD CALLED");
+
+	    List<Booking> bookings = bookingRepository.findByUserId(userId);
+
+	  
+
+	    return bookings;
 	}
 	
 	@Override

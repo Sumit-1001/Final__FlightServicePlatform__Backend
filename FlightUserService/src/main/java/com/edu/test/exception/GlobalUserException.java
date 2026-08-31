@@ -1,6 +1,7 @@
 package com.edu.test.exception;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+
 
 @ControllerAdvice
 public class GlobalUserException {
@@ -28,6 +31,16 @@ public class GlobalUserException {
 		
 		return new ResponseEntity<ErrorResponse>(err,HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(
+			ScheduleNotFoundException.class)
+			public ResponseEntity<ErrorResponse>handleScheduleNotFound(
+			ScheduleNotFoundException ex) {
+			
+			ErrorResponse error =new ErrorResponse(ex.getMessage(), LocalDate.now());
+		
+			return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
+			}
 	
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)

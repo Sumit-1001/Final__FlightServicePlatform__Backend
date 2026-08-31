@@ -1,18 +1,21 @@
 package com.edu.test.service;
 
 import java.util.List;
-import java.util.stream.Stream;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edu.test.client.BookingFeignClient;
 import com.edu.test.client.FlightFeignClient;
+import com.edu.test.client.ScheduleFeignClient;
+import com.edu.test.dto.BookingDTO;
 import com.edu.test.dto.FlightDTO;
+import com.edu.test.dto.ScheduleDTO;
 import com.edu.test.dto.UserRequestDTO;
 import com.edu.test.entity.Address;
 import com.edu.test.entity.User;
 import com.edu.test.enums.DestinationLocation;
 import com.edu.test.enums.SourceLocation;
+import com.edu.test.exception.ScheduleNotFoundException;
 import com.edu.test.exception.UserAlreadyExistsException;
 import com.edu.test.exception.UserNotFoundException;
 import com.edu.test.repository.IUserRepository;
@@ -25,6 +28,12 @@ public class UserServiceImpl implements IUserService {
 
 	@Autowired
 	private FlightFeignClient flightFeignClient;
+	
+	@Autowired
+	private BookingFeignClient bookingFeignClient;
+	
+	@Autowired
+	private ScheduleFeignClient scheduleFeignClient;
 	
 	@Override
 	public String addNewUser(UserRequestDTO user) throws UserAlreadyExistsException {
@@ -204,6 +213,33 @@ public class UserServiceImpl implements IUserService {
 	                    source,
 	                    destination);
 	}
+	
+	
+	
+	// booking get by userid
+	
+	@Override
+	public List<BookingDTO> getBookingsByUserId(Integer userId) throws UserNotFoundException {
+		User user11 = userRepository.findById(userId)
+		        .orElseThrow(() ->
+		                new UserNotFoundException(
+		                        "User doesn't exist of UserId : " + userId));
+		
+		
+	List<BookingDTO> userDetailsList = bookingFeignClient.getBookingsByUser(userId);
+	
+	userDetailsList.forEach(b ->
+	b.setUserName(user11.getUserName()));
+	return userDetailsList;
+	}
+	
+	@Override
+	public ScheduleDTO getScheduleById(int id)
+	throws ScheduleNotFoundException {
+	return scheduleFeignClient.getScheduleById(id);
+	}
+	
+	
 	
 	
 }
