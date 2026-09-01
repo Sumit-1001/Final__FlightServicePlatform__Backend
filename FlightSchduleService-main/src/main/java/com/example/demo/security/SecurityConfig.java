@@ -24,7 +24,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/public/**").permitAll()
                         
-                        .requestMatchers("/admin2/schedules/**").hasRole("ADMIN")
+                        .requestMatchers("/admin2/schedules/**").hasRole("admin")
                         .requestMatchers("/api/employee/**").hasRole("employee")
                         .requestMatchers(
                         	    "/swagger-ui/**",
@@ -43,25 +43,15 @@ public class SecurityConfig {
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
  
-        UserDetails mike = User.builder()
+        UserDetails SchedulerAdmin = User.builder()
                 .username("admin1")
                 .password(passwordEncoder().encode("admin123"))
-                .roles("ADMIN", "employee")
-                .build();
- 
-        UserDetails jenny = User.builder()
-                .username("jenny")
-                .password(passwordEncoder().encode("jenny"))
                 .roles("admin")
                 .build();
  
-        UserDetails neha = User.builder()
-                .username("neha")
-                .password(passwordEncoder().encode("neha123"))
-                .roles("employee")
-                .build();
+
  
-        return new InMemoryUserDetailsManager(mike, jenny, neha);
+        return new InMemoryUserDetailsManager(SchedulerAdmin);
     }
  
     @Bean

@@ -1,6 +1,6 @@
 package com.edu.test.exception;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +19,7 @@ public class GlobalUserException {
 	@ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponse> errorOccured1(UserNotFoundException ex)
 	{
-		ErrorResponse err = new ErrorResponse(ex.getMessage(), LocalDate.now());
+		ErrorResponse err = new ErrorResponse(ex.getMessage(),HttpStatus.BAD_REQUEST.value(), LocalDateTime.now());
 		
 		return new ResponseEntity<ErrorResponse>(err,HttpStatus.BAD_REQUEST);
 	}
@@ -27,7 +27,7 @@ public class GlobalUserException {
 	@ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> errorOccured2(UserAlreadyExistsException ex)
 	{
-		ErrorResponse err = new ErrorResponse(ex.getMessage(), LocalDate.now());
+		ErrorResponse err = new ErrorResponse(ex.getMessage(),HttpStatus.BAD_REQUEST.value(), LocalDateTime.now());
 		
 		return new ResponseEntity<ErrorResponse>(err,HttpStatus.BAD_REQUEST);
 	}
@@ -37,9 +37,9 @@ public class GlobalUserException {
 			public ResponseEntity<ErrorResponse>handleScheduleNotFound(
 			ScheduleNotFoundException ex) {
 			
-			ErrorResponse error =new ErrorResponse(ex.getMessage(), LocalDate.now());
+		   ErrorResponse err = new ErrorResponse(ex.getMessage(),HttpStatus.NOT_FOUND.value(), LocalDateTime.now());
 		
-			return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(err,HttpStatus.NOT_FOUND);
 			}
 	
 

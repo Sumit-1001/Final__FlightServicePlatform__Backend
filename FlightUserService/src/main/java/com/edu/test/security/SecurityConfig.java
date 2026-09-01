@@ -24,9 +24,7 @@ package com.edu.test.security;
 	        http
 	                .csrf(csrf -> csrf.disable())
 	                .authorizeHttpRequests(auth -> auth
-	                        .requestMatchers("/api/public/**").hasRole("user")
-	                        .requestMatchers("/api/admin1/**").hasRole("admin")
-	                        .requestMatchers("/api/admin2/**").hasRole("employee")
+	                        .requestMatchers("/api/public/**").permitAll()
 	                        .requestMatchers(
 	                        	    "/swagger-ui/**",
 	                        	    "/swagger-ui.html",
@@ -42,23 +40,13 @@ package com.edu.test.security;
 
 	    @Bean InMemoryUserDetailsManager userDetailsService() {
 
-	        UserDetails mike = User.builder()
+	        UserDetails USERE1 = User.builder()
 	                .username("admin1")
 	                .password(passwordEncoder().encode("admin123"))
 	                .roles("user")
 	                .build();
 
-	        UserDetails jenny = User.builder()
-	                .username("jenny")
-	                .password(passwordEncoder().encode("jenny"))
-	                .roles("admin")
-	                .build();
-
-	        UserDetails neha = User.builder()
-	                .username("neha")
-	                .password(passwordEncoder().encode("neha123"))
-	                .roles("employee")
-	                .build();
+	      
 
 	        return new InMemoryUserDetailsManager(mike, jenny, neha);
 	    }

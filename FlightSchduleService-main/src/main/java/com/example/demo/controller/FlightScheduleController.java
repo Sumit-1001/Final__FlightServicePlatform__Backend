@@ -28,7 +28,7 @@ public class FlightScheduleController {
 	
 	
 	// Create Schedule
-	@PreAuthorize("hasRole('ADMIN')")
+	
 	@PostMapping("/addschedules")
 	@Transactional
 	public FlightSchedule addSchedule(@RequestBody ScheduleRequestDTO schedule) {
@@ -49,7 +49,7 @@ public class FlightScheduleController {
 	}
 	
 	// Update Schedule
-	@PreAuthorize("hasRole('ADMIN')")
+	
 	@PutMapping("/{id}")
 	public FlightSchedule updateSchedule(
 	@PathVariable int id,@RequestBody FlightSchedule schedule) {

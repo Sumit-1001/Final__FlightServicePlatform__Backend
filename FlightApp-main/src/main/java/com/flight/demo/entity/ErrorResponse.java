@@ -1,9 +1,8 @@
-package com.edu.test.exception;
-
+package com.flight.demo.entity;
 
 import java.time.LocalDateTime;
 
-
+import jakarta.persistence.Entity;
 
 public class ErrorResponse {
 	private String message;
