@@ -1,15 +1,10 @@
 package com.edu.test.entity;
 
-import org.hibernate.validator.constraints.UniqueElements;
-
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -34,6 +29,9 @@ public class User {
 	
 	@Digits(integer = 10, fraction = 0)
 	private long phoneNumber;
+	
+	@Column
+	private String password = "user123";
 	
 	
 	@Embedded

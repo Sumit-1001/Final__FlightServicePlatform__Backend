@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,5 +26,9 @@ public interface FlightSchduleRepository extends JpaRepository<FlightSchedule, I
 	List<FlightSchedule> findByDepartureDateAndDestination(LocalDate departureDate,String destination);
 	
 	boolean existsByFlightId(int flightId);
+	
+	boolean existsByFlightIdAndDepartureTime(
+	        Integer flightId,
+	        LocalTime DepartureTime);
  
 }

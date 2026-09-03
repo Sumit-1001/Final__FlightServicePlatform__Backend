@@ -1,12 +1,17 @@
 package com.edu.test.service;
 
-import org.springframework.http.ResponseEntity;
+import org.apache.hc.client5.http.auth.InvalidCredentialsException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import java.util.List;
 
 import com.edu.test.dto.BookingDTO;
+import com.edu.test.dto.BookingRequestDTO;
+import com.edu.test.dto.BookingResponseDTO;
 import com.edu.test.dto.FlightDTO;
 import com.edu.test.dto.ScheduleDTO;
+import com.edu.test.dto.UserLoginDTO;
 import com.edu.test.dto.UserRequestDTO;
 import com.edu.test.entity.Address;
 import com.edu.test.entity.User;
@@ -19,6 +24,7 @@ import com.edu.test.exception.UserNotFoundException;
 @Service
 public interface IUserService  {
 
+	public User login(UserLoginDTO dto) throws UserNotFoundException , InvalidCredentialsException; 
 	
 	public String addNewUser(UserRequestDTO user) throws UserAlreadyExistsException;
 	
@@ -56,6 +62,9 @@ public interface IUserService  {
 	    // booking check by id
 	    
 	    List<BookingDTO> getBookingsByUserId(Integer userId) throws UserNotFoundException;
+	    
+	   
+	    BookingResponseDTO createBooking(BookingRequestDTO request);
 	    
 	    //find by scheduleid
 	    ScheduleDTO getScheduleById(int id)throws ScheduleNotFoundException ;

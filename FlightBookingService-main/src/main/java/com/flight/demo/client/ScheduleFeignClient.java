@@ -13,7 +13,7 @@ import com.flight.demo.security.FeignSecurityConfig;
 configuration = FeignSecurityConfig.class)
 public interface ScheduleFeignClient {
 
-	@GetMapping("/admin2/schedules/{id}")
+	@GetMapping("/api/public/schedules/{id}")
 	ScheduleDTO getScheduleById(@PathVariable("id") Integer id);
 	
 	@PutMapping("/admin2/schedules/seats/reduce/{id}/{count}")

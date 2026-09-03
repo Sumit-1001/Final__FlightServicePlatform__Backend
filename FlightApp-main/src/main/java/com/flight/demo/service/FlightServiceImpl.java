@@ -118,5 +118,42 @@ public class FlightServiceImpl implements IFlightService{
 
 	    return repository.findBySourceAndDestination(source, destination);
 	}
+	
+	
+	@Transactional
+	@Override
+	public String updateSourceByFlightNumber(
+	        String flightNumber,
+	        SourceLocation source) {
+ 
+	    Flight flight = repository.findByFlightNumber(flightNumber);
+ 
+	    if (flight == null) {
+	        throw new FlightNotFoundException("No Flight Exists with Flight Number : " + flightNumber);
+	    }
+ 
+	    flight.setSource(source);
+	    repository.save(flight);
+	    return "Source Updated Successfully For Flight Number : "+ flightNumber;
+	}
+ 
+ 
+	@Transactional
+	@Override
+	public String updateDestinationByFlightNumber(
+	        String flightNumber,
+	        DestinationLocation destination) {
+ 
+	    Flight flight = repository.findByFlightNumber(flightNumber);
+ 
+	    if (flight == null) {
+	        throw new FlightNotFoundException("No Flight Exists with Flight Number : "+ flightNumber);
+	    }
+ 
+	    flight.setDestination(destination);
+	    repository.save(flight);
+	    return "Destination Updated Successfully For Flight Number : "+ flightNumber;
+	}
+ 
 
 }

@@ -37,45 +37,68 @@ public class BookingServiceImpl implements IBookingService{
 	@Transactional
 	@Override
 	public BookingResponseDTO createBooking(BookingRequestDTO request){
-		
-		
-		UserDTO user=userFeignClient.getUserById(request.getUserId());
-		if(user == null) {
-			throw new UserNotFoundException("User not found with id "+ request.getUserId());
-		}
-		ScheduleDTO schedule=scheduleFeignClient.getScheduleById(request.getScheduleId());
-		if(schedule == null) {
-			throw new ScheduleNotFoundException("Schedule not found with id "+ request.getScheduleId());
-		}
-		if(schedule.getAvailableSeats()<request.getNumberOfSeats()) {
-			throw new SeatNotAvailableException("Seats not available");
-		}
-		
-		double totalFare= schedule.getPrice()*request.getNumberOfSeats();
-		
-		Booking booking =new Booking();
-		
-		booking.setUserId(request.getUserId());
-		booking.setScheduleId(request.getScheduleId());
-		booking.setSeatsBooked(request.getNumberOfSeats());
-		booking.setTotalFare(totalFare);
-		booking.setBookingStatus(BookingStatus.CONFIRMED);
-		booking.setBookingDate(LocalDate.now());
-		
-		bookingRepository.save(booking);
-		
-		scheduleFeignClient.updateAvailableSeats(
-		        request.getScheduleId(),
-		        request.getNumberOfSeats());
-		
-		return new BookingResponseDTO(
-				booking.getBookingId(),
-				user.getUserName(),
-				booking.getScheduleId(),
-				booking.getSeatsBooked(),
-				booking.getTotalFare(),
-				booking.getBookingStatus()
-				);
+
+	    System.out.println("STEP 1");
+
+	    UserDTO user = userFeignClient.getUserById(request.getUserId());
+
+	    System.out.println("USER = " + user);
+
+	    ScheduleDTO schedule =
+	            scheduleFeignClient.getScheduleById(request.getScheduleId());
+
+	    System.out.println("SCHEDULE = " + schedule);
+
+	    System.out.println("STEP 2");
+
+	    if(user == null) {
+	        throw new UserNotFoundException(
+	                "User not found with id " + request.getUserId());
+	    }
+
+	    if(schedule == null) {
+	        throw new ScheduleNotFoundException(
+	                "Schedule not found with id " + request.getScheduleId());
+	    }
+
+	    System.out.println("STEP 3");
+
+	    if(schedule.getAvailableSeats() < request.getNumberOfSeats()) {
+	        throw new SeatNotAvailableException("Seats not available");
+	    }
+
+	    double totalFare =
+	            schedule.getPrice() * request.getNumberOfSeats();
+
+	    System.out.println("TOTAL FARE = " + totalFare);
+
+	    Booking booking = new Booking();
+
+	    booking.setUserId(request.getUserId());
+	    booking.setScheduleId(request.getScheduleId());
+	    booking.setSeatsBooked(request.getNumberOfSeats());
+	    booking.setTotalFare(totalFare);
+	    booking.setBookingStatus(BookingStatus.CONFIRMED);
+	    booking.setBookingDate(LocalDate.now());
+
+	    bookingRepository.save(booking);
+
+	    System.out.println("BOOKING SAVED");
+
+	    scheduleFeignClient.updateAvailableSeats(
+	            request.getScheduleId(),
+	            request.getNumberOfSeats());
+
+	    System.out.println("SEATS UPDATED");
+
+	    return new BookingResponseDTO(
+	            booking.getBookingId(),
+	            user.getUserName(),
+	            booking.getScheduleId(),
+	            booking.getSeatsBooked(),
+	            booking.getTotalFare(),
+	            booking.getBookingStatus()
+	    );
 	}
 	
 	@Override

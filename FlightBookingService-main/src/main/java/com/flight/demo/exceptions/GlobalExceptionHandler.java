@@ -1,36 +1,46 @@
 package com.flight.demo.exceptions;
 
+import java.time.LocalDateTime;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<String> handleUser(
+    public ResponseEntity<ErrorResponse> handleUser(
             UserNotFoundException ex){
-
-        return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
+ErrorResponse err = new ErrorResponse(ex.getMessage(),HttpStatus.NOT_FOUND.value(), LocalDateTime.now());
+		
+		return new ResponseEntity<ErrorResponse>(err,HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ScheduleNotFoundException.class)
-    public ResponseEntity<String> handleSchedule(
+    public ResponseEntity<ErrorResponse> handleSchedule(
             ScheduleNotFoundException ex){
 
-        return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
+ErrorResponse err = new ErrorResponse(ex.getMessage(),HttpStatus.NOT_FOUND.value(), LocalDateTime.now());
+		
+		return new ResponseEntity<ErrorResponse>(err,HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(SeatNotAvailableException.class)
-    public ResponseEntity<String> handleSeat(
+    public ResponseEntity<ErrorResponse> handleSeat(
             SeatNotAvailableException ex){
 
-        return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
+ErrorResponse err = new ErrorResponse(ex.getMessage(),HttpStatus.NOT_FOUND.value(), LocalDateTime.now());
+		
+		return new ResponseEntity<ErrorResponse>(err,HttpStatus.NOT_FOUND);
     }
     
     @ExceptionHandler(BookingNotFoundException.class)
-    public ResponseEntity<String>handleBooking(BookingNotFoundException ex){
+    public ResponseEntity<ErrorResponse>handleBooking(BookingNotFoundException ex){
     	
-    	return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
-    }
+ErrorResponse err = new ErrorResponse(ex.getMessage(),HttpStatus.NOT_FOUND.value(), LocalDateTime.now());
+		
+		return new ResponseEntity<ErrorResponse>(err,HttpStatus.NOT_FOUND);
+		}
 }

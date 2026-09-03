@@ -2,6 +2,7 @@ package com.example.demo.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -23,9 +24,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/public/**").permitAll()
-                        
+                        .requestMatchers(
+                        	    HttpMethod.GET,
+                        	    "/admin2/schedules/flight/**"
+                        	).permitAll()
                         .requestMatchers("/admin2/schedules/**").hasRole("admin")
-                        .requestMatchers("/api/employee/**").hasRole("employee")
                         .requestMatchers(
                         	    "/swagger-ui/**",
                         	    "/swagger-ui.html",

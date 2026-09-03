@@ -2,6 +2,7 @@ package com.edu.test.controller;
 
 import java.util.List;
 
+import org.apache.hc.client5.http.auth.InvalidCredentialsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.test.client.ScheduleFeignClient;
 import com.edu.test.dto.BookingDTO;
+import com.edu.test.dto.BookingRequestDTO;
+import com.edu.test.dto.BookingResponseDTO;
 import com.edu.test.dto.FlightDTO;
 import com.edu.test.dto.ScheduleDTO;
+import com.edu.test.dto.UserLoginDTO;
 import com.edu.test.dto.UserRequestDTO;
 import com.edu.test.entity.Address;
 import com.edu.test.entity.User;
@@ -27,6 +31,7 @@ import com.edu.test.enums.SourceLocation;
 import com.edu.test.exception.ScheduleNotFoundException;
 import com.edu.test.exception.UserAlreadyExistsException;
 import com.edu.test.exception.UserNotFoundException;
+import com.edu.test.repository.IUserRepository;
 import com.edu.test.service.IUserService;
 
 import jakarta.transaction.Transactional;
@@ -45,6 +50,12 @@ public class UserController {
 		System.out.println("Course user Constructor called ");
 	}
 	
+	@PostMapping("/login")
+	public ResponseEntity<?> login(
+	@RequestBody UserLoginDTO dto)  throws UserNotFoundException , InvalidCredentialsException{
+	return ResponseEntity.ok(
+	userService.login(dto));
+	}
 	
 	@PostMapping("/addUser")
 	@Transactional
@@ -168,14 +179,23 @@ public class UserController {
 	                    destination));
 	}
 	
-	@GetMapping("/api/public/user/bookings/{userId}")
+	@GetMapping("/bookings/user/{userId}")
 	public List<BookingDTO> getBookingsByUserId(
 	@PathVariable Integer userId)  throws UserNotFoundException{
 	return userService.getBookingsByUserId(userId);
 	}
 	
+
 	
-	@GetMapping("/api/public/schedules/{id}")
+	@PostMapping("/bookings")
+	public ResponseEntity<BookingResponseDTO> createBooking(
+	@RequestBody BookingRequestDTO request) {
+	return new ResponseEntity<>(
+	userService.createBooking(request),
+	HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/schedules/{id}")
 	public ResponseEntity<ScheduleDTO> getScheduleById(
 	        @PathVariable int id)
 	        throws ScheduleNotFoundException {

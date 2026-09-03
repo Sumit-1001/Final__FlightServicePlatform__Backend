@@ -49,7 +49,7 @@ public class FlightScheduleController {
 	}
 	
 	// Update Schedule
-	
+	@Transactional
 	@PutMapping("/{id}")
 	public FlightSchedule updateSchedule(
 	@PathVariable int id,@RequestBody FlightSchedule schedule) {

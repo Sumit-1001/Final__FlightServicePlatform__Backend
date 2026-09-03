@@ -37,10 +37,14 @@ public class FlightScheduleServiceImpl implements IFlightScheduleService {
             throw new FlightNotFoundException("Flight not found");
         }
         
-        if(repo.existsByFlightId(schedule.getFlightId()))
+        if(repo.existsByFlightIdAndDepartureTime(
+                schedule.getFlightId(),
+                schedule.getDepartureTime()))
         {
-        	throw new ScheduleAlreadyExistException("Schedule already exist for this flight !!");
+            throw new ScheduleAlreadyExistException(
+                "Schedule already exists for this flight on this time");
         }
+        
 
         FlightSchedule newFlightSchedule = new FlightSchedule();
 

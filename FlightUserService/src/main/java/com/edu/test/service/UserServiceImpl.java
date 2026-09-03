@@ -1,6 +1,8 @@
 package com.edu.test.service;
 
 import java.util.List;
+
+import org.apache.hc.client5.http.auth.InvalidCredentialsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,8 +10,11 @@ import com.edu.test.client.BookingFeignClient;
 import com.edu.test.client.FlightFeignClient;
 import com.edu.test.client.ScheduleFeignClient;
 import com.edu.test.dto.BookingDTO;
+import com.edu.test.dto.BookingRequestDTO;
+import com.edu.test.dto.BookingResponseDTO;
 import com.edu.test.dto.FlightDTO;
 import com.edu.test.dto.ScheduleDTO;
+import com.edu.test.dto.UserLoginDTO;
 import com.edu.test.dto.UserRequestDTO;
 import com.edu.test.entity.Address;
 import com.edu.test.entity.User;
@@ -34,6 +39,32 @@ public class UserServiceImpl implements IUserService {
 	
 	@Autowired
 	private ScheduleFeignClient scheduleFeignClient;
+	
+	
+	
+	@Override
+	public User login(UserLoginDTO dto) throws UserNotFoundException, InvalidCredentialsException {
+
+	    User user =
+	            userRepository.findByuserName(
+	                    dto.getUserName());
+
+	    if(user == null) {
+
+	        throw new UserNotFoundException( "User Not Found");
+	    }
+
+	    if(!user.getPassword().equals(
+	            dto.getPassword())) {
+
+	        throw new InvalidCredentialsException(
+	                "Invalid Password");
+	    }
+
+	    return user;
+	}
+	
+	
 	
 	@Override
 	public String addNewUser(UserRequestDTO user) throws UserAlreadyExistsException {
@@ -237,6 +268,11 @@ public class UserServiceImpl implements IUserService {
 	public ScheduleDTO getScheduleById(int id)
 	throws ScheduleNotFoundException {
 	return scheduleFeignClient.getScheduleById(id);
+	}
+
+	@Override
+	public BookingResponseDTO createBooking(BookingRequestDTO request) {
+	return bookingFeignClient.createBooking(request);
 	}
 	
 	

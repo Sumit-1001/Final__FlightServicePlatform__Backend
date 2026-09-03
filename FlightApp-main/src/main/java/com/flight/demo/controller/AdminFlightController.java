@@ -78,4 +78,45 @@ public class AdminFlightController {
 	    return ResponseEntity.ok(flightService.getFlightsBySourceAndDestination(
 	                    source, destination));
 	}
+	
+	
+	
+	
+	@PutMapping("/update-source-number/{flightNumber}/{source}") 
+    public ResponseEntity<String> updateSourceByFlightNumber(
+ 
+            @PathVariable String flightNumber,
+ 
+            @PathVariable SourceLocation source) {
+ 
+ 
+        return ResponseEntity.ok(
+ 
+                flightService.updateSourceByFlightNumber(
+ 
+                        flightNumber,
+ 
+                        source));
+ 
+    }
+ 
+ 
+    @PutMapping("/update-destination-number/{flightNumber}/{destination}")
+ 
+    public ResponseEntity<String> updateDestinationByFlightNumber(
+ 
+            @PathVariable String flightNumber,
+ 
+            @PathVariable DestinationLocation destination) {
+ 
+ 
+        return ResponseEntity.ok(
+ 
+                flightService.updateDestinationByFlightNumber(
+ 
+                        flightNumber,
+ 
+                        destination));
+ 
+    }
 }
