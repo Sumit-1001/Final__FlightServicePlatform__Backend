@@ -21,15 +21,15 @@ public class FlightServiceImpl implements IFlightService{
 	
 	@Transactional
 	@Override
-	public String addFlight(Flight flight) {
+	public Flight addFlight(Flight flight) {
 		
 		if(repository.existsByFlightNumber(flight.getFlightNumber())) {
 			throw new FlightAlreadyExisitsException(
 					"Flight Already exists with Flight number "+flight.getFlightNumber());
 		}
 		
-		Flight savedFlight=repository.save(flight);
-		return "Flight Saved Successfully "+savedFlight.getFlightId();
+		return repository.save(flight);
+//		return "Flight Saved Successfully "+savedFlight.getFlightId();
 	}
 
 	@Override
@@ -82,13 +82,13 @@ public class FlightServiceImpl implements IFlightService{
 
 	@Transactional
 	@Override
-	public String updateFlight(int flightId, Flight flight) {
+	public Flight updateFlight(int flightId, Flight flight) {
 		// here i used "int" dataType
 		Flight existingFlight=repository.findById(flightId)
 				.orElseThrow(()-> new FlightNotFoundException("No such Flight Exist with flight id: "+flightId));
 		
-		if(repository.existsByFlightNumber(flight.getFlightNumber())
-		        && existingFlight.getFlightNumber().equals(flight.getFlightNumber())) {
+		if(!existingFlight.getFlightNumber().equals(flight.getFlightNumber())
+				&& repository.existsByFlightNumber(flight.getFlightNumber())) {
 		    throw new FlightAlreadyExisitsException("");
 		}
 		
@@ -97,8 +97,8 @@ public class FlightServiceImpl implements IFlightService{
 		existingFlight.setSource(flight.getSource());
 		existingFlight.setDestination(flight.getDestination());
 		existingFlight.setTotalSeats( flight.getTotalSeats());
-		repository.save(existingFlight);
-		return "Flight updated successfully";
+		
+		return repository.save(existingFlight);
 	}
 
 	@Override

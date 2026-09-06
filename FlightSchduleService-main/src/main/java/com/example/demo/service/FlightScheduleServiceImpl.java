@@ -78,23 +78,27 @@ public class FlightScheduleServiceImpl implements IFlightScheduleService {
 
 	@Override
 	public FlightSchedule updateSchedule(int scheduleId, FlightSchedule schedule) {
-		FlightSchedule newSchedule = repo.findById(scheduleId).orElseThrow(() ->
-		new FlightNotFoundException(
-		"Schedule not found"));
+		FlightSchedule newSchedule = repo.findById(scheduleId)
+				.orElseThrow(() ->new ScheduleNotFoundException("Schedule not found"));
 		
 		FlightDTO flight = feignClient.getFlightById(schedule.getFlightId());
 
-				if (flight == null) {
-				throw new ScheduleNotFoundException("Flight not found");
+		if (flight == null) {
+		    throw new FlightNotFoundException("Flight not found");
+		}
+					
 
-				}
-						
 		newSchedule.setFlightId(schedule.getFlightId());		
 		newSchedule.setDepartureDate(schedule.getDepartureDate());
 		newSchedule.setArrivalTime(schedule.getArrivalTime());
 		newSchedule.setDepartureTime(schedule.getDepartureTime());
+		newSchedule.setPrice(schedule.getPrice());
 		
-		return repo.save(newSchedule);
+		FlightSchedule saved = repo.save(newSchedule);
+
+		System.out.println(saved);
+
+		return saved;
 	}
 
 	@Override

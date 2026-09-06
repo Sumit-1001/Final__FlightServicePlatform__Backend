@@ -14,7 +14,7 @@ import com.flight.demo.enums.SourceLocation;
 public interface IFlightService {
 
 	
-	public String addFlight(Flight flight);
+	public Flight addFlight(Flight flight);
 	
 	public Flight viewFlight(int flightId);
 	
@@ -26,7 +26,7 @@ public interface IFlightService {
 	
 	public String deleteFlight(int flightId);
 	
-	public String updateFlight(int flightId,Flight flight);
+	public Flight updateFlight(int flightId,Flight flight);
 	
 	List<Flight> getFlightsBySource(SourceLocation source);
 

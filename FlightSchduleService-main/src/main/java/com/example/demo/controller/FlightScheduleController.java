@@ -75,7 +75,8 @@ public class FlightScheduleController {
  
 	    return flightScheduleService.updateAvailableSeats(id, count);
 	}
-	//Update Cancelled Seats
+
+	
 	@PutMapping("/seats/add/{id}/{count}")
 	public String addSeatsBack( @PathVariable int id, @PathVariable int count) {
  
@@ -83,8 +84,6 @@ public class FlightScheduleController {
 	}
 	 
 	
-	//JPA Queries
-	// Query 1
 	@GetMapping("/flight/{flightId}")
 	public List<FlightSchedule> getSchedulesByFlightId(@PathVariable int flightId) {
 
@@ -92,19 +91,19 @@ public class FlightScheduleController {
 	}
 	
 	
-	//Query2
+
 	@GetMapping("/date/{date}")
 	public List<FlightSchedule> getByDate(@PathVariable LocalDate date) {
 		return flightScheduleService.getSchedulesByDate(date);
 	}
 	
-	// Query 3
+
 	@GetMapping("/destination/{destination}")
 	public List<FlightSchedule> getByDestination(@PathVariable String destination) {
 		return flightScheduleService.getSchedulesByDestination(destination);
 	}
 	
-	// Query 4
+	
 	@GetMapping("/available/{seats}")
 	public List<FlightSchedule> getByAvailableSeats(@PathVariable int seats) {
 

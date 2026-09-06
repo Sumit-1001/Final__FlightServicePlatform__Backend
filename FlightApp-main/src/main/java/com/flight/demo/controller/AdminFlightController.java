@@ -28,7 +28,7 @@ public class AdminFlightController {
 	private IFlightService flightService;
 	
 	@PostMapping("/addFlight")
-	public ResponseEntity<String> addFlight(@Valid @RequestBody Flight flight){
+	public ResponseEntity<Flight> addFlight(@Valid @RequestBody Flight flight){
 		return ResponseEntity.ok(flightService.addFlight(flight));
 		
 	}
@@ -44,7 +44,7 @@ public class AdminFlightController {
 	}
 	
 	@PutMapping("/update/{flightId}")
-	public ResponseEntity<String> updateFlight(@PathVariable Integer flightId,@Valid @RequestBody Flight flight){
+	public ResponseEntity<Flight> updateFlight(@PathVariable Integer flightId,@Valid @RequestBody Flight flight){
 		return ResponseEntity.ok(flightService.updateFlight(flightId,flight));
 	}
 	

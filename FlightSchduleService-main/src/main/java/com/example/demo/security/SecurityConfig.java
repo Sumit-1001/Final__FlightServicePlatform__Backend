@@ -28,7 +28,7 @@ public class SecurityConfig {
                         	    HttpMethod.GET,
                         	    "/admin2/schedules/flight/**"
                         	).permitAll()
-                        .requestMatchers("/admin2/schedules/**").hasRole("admin")
+                        .requestMatchers("/admin2/schedules/**").hasRole("ADMIN")
                         .requestMatchers(
                         	    "/swagger-ui/**",
                         	    "/swagger-ui.html",
@@ -49,7 +49,7 @@ public class SecurityConfig {
         UserDetails SchedulerAdmin = User.builder()
                 .username("admin1")
                 .password(passwordEncoder().encode("admin123"))
-                .roles("admin")
+                .roles("ADMIN")
                 .build();
  
 
