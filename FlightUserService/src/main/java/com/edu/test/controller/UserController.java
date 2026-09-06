@@ -51,10 +51,8 @@ public class UserController {
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<?> login(
-	@RequestBody UserLoginDTO dto)  throws UserNotFoundException , InvalidCredentialsException{
-	return ResponseEntity.ok(
-	userService.login(dto));
+	public ResponseEntity<?> login(@RequestBody UserLoginDTO dto)  throws UserNotFoundException , InvalidCredentialsException{
+		return ResponseEntity.ok(userService.login(dto));
 	}
 	
 	@PostMapping("/addUser")

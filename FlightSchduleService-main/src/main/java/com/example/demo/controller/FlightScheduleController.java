@@ -51,41 +51,36 @@ public class FlightScheduleController {
 	// Update Schedule
 	@Transactional
 	@PutMapping("/{id}")
-	public FlightSchedule updateSchedule(
-	@PathVariable int id,@RequestBody FlightSchedule schedule) {
+	public FlightSchedule updateSchedule(@PathVariable int id,@RequestBody FlightSchedule schedule) {
 	return flightScheduleService.updateSchedule(id, schedule);
 	}
 	
-	// Delete Schedule
+	
 	@DeleteMapping("/{id}")
-	public String deleteSchedule(
-	@PathVariable int id) {
+	public String deleteSchedule(@PathVariable int id) {
 
 	return flightScheduleService.deleteSchedule(id);
 	}
 	
-	// Check Available Seats by schedulerId
+	
 	@GetMapping("/seats/{id}")
 	public Integer checkAvailableSeats(@PathVariable int id) {
 
 	return flightScheduleService.checkAvailableSeats(id);
 	}
 	
-	//Update Available Seats
-		@PutMapping("/seats/reduce/{id}/{count}")
-		public String updateAvailableSeats(
-		        @PathVariable Integer id,
-		        @PathVariable Integer count) {
-	 
-		    return flightScheduleService
-		            .updateAvailableSeats(id, count);
-		}
-		//Update Cancelled Seats
-		@PutMapping("/seats/add/{id}/{count}")
-		public String addSeatsBack( @PathVariable int id, @PathVariable int count) {
-	 
-		    return flightScheduleService .addSeatsBack(id, count);
-		}
+	
+	@PutMapping("/seats/reduce/{id}/{count}")
+	public String updateAvailableSeats(@PathVariable Integer id,@PathVariable Integer count) {
+ 
+	    return flightScheduleService.updateAvailableSeats(id, count);
+	}
+	//Update Cancelled Seats
+	@PutMapping("/seats/add/{id}/{count}")
+	public String addSeatsBack( @PathVariable int id, @PathVariable int count) {
+ 
+	    return flightScheduleService .addSeatsBack(id, count);
+	}
 	 
 	
 	//JPA Queries
@@ -93,28 +88,27 @@ public class FlightScheduleController {
 	@GetMapping("/flight/{flightId}")
 	public List<FlightSchedule> getSchedulesByFlightId(@PathVariable int flightId) {
 
-	return flightScheduleService.getSchedulesByFlightId(flightId);
+		return flightScheduleService.getSchedulesByFlightId(flightId);
 	}
 	
 	
 	//Query2
 	@GetMapping("/date/{date}")
 	public List<FlightSchedule> getByDate(@PathVariable LocalDate date) {
-	return flightScheduleService.getSchedulesByDate(date);
+		return flightScheduleService.getSchedulesByDate(date);
 	}
 	
 	// Query 3
 	@GetMapping("/destination/{destination}")
 	public List<FlightSchedule> getByDestination(@PathVariable String destination) {
-	return flightScheduleService.getSchedulesByDestination(destination);
+		return flightScheduleService.getSchedulesByDestination(destination);
 	}
 	
 	// Query 4
 	@GetMapping("/available/{seats}")
-	public List<FlightSchedule> getByAvailableSeats(
-	@PathVariable int seats) {
+	public List<FlightSchedule> getByAvailableSeats(@PathVariable int seats) {
 
-	return flightScheduleService.getFlightsByAvailableSeats(seats);
+		return flightScheduleService.getFlightsByAvailableSeats(seats);
 	}
 	
 }

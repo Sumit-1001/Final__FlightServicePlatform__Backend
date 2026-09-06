@@ -14,13 +14,14 @@ public class UserRequestDTO {
 
     @NotEmpty(message = "Username is required")
     private String userName;
-
     @Email(message = "Invalid email format")
     private String email;
-
-	@Digits(integer = 10, fraction = 0)
-	private long phoneNumber;
-
+    @Digits(integer = 10, fraction = 0)
+    private long phoneNumber;
+    
+    @NotEmpty(message = "Password is required")
+    private String password;
+    
     @Valid
     private Address permanentAddress;
 }

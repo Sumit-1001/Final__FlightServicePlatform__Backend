@@ -24,6 +24,7 @@ import com.edu.test.exception.ScheduleNotFoundException;
 import com.edu.test.exception.UserAlreadyExistsException;
 import com.edu.test.exception.UserNotFoundException;
 import com.edu.test.repository.IUserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -40,7 +41,8 @@ public class UserServiceImpl implements IUserService {
 	@Autowired
 	private ScheduleFeignClient scheduleFeignClient;
 	
-	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Override
 	public User login(UserLoginDTO dto) throws UserNotFoundException, InvalidCredentialsException {
@@ -54,9 +56,8 @@ public class UserServiceImpl implements IUserService {
 	        throw new UserNotFoundException( "User Not Found");
 	    }
 
-	    if(!user.getPassword().equals(
-	            dto.getPassword())) {
-
+	    if(!passwordEncoder.matches(dto.getPassword(),user.getPassword()))
+	    {
 	        throw new InvalidCredentialsException(
 	                "Invalid Password");
 	    }
@@ -81,6 +82,9 @@ public class UserServiceImpl implements IUserService {
 	    newUser.setUserName(user.getUserName());
 	    newUser.setEmail(user.getEmail());
 	    newUser.setPhoneNumber(user.getPhoneNumber());
+	    newUser.setPassword(
+	            passwordEncoder.encode(user.getPassword())
+	    );
 	    newUser.setPermanentAddress(user.getPermanentAddress());
 
 	    userRepository.save(newUser);
@@ -128,8 +132,12 @@ public class UserServiceImpl implements IUserService {
 		user1.setUserName(user.getUserName());
 		user1.setEmail(user.getEmail());
 		user1.setPhoneNumber(user.getPhoneNumber());
+		user1.setPassword(
+		        passwordEncoder.encode(user.getPassword())
+		);
 		user1.setPermanentAddress(user.getPermanentAddress());
 		
+		userRepository.save(user1);
 		
 		return "user info updated for userid : "+UserId;
 		
@@ -164,6 +172,7 @@ public class UserServiceImpl implements IUserService {
 		
 		user1.setPermanentAddress(userAddress);
 		
+		userRepository.save(user1);
 		return "address saved for userid : "+UserId;
 	}
 
@@ -239,10 +248,7 @@ public class UserServiceImpl implements IUserService {
 	        SourceLocation source,
 	        DestinationLocation destination) {
 
-	    return flightFeignClient
-	            .getFlightsBySourceAndDestination(
-	                    source,
-	                    destination);
+	    return flightFeignClient.getFlightsBySourceAndDestination(source,destination);
 	}
 	
 	
@@ -252,8 +258,7 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public List<BookingDTO> getBookingsByUserId(Integer userId) throws UserNotFoundException {
 		User user11 = userRepository.findById(userId)
-		        .orElseThrow(() ->
-		                new UserNotFoundException(
+		        .orElseThrow(() -> new UserNotFoundException(
 		                        "User doesn't exist of UserId : " + userId));
 		
 		

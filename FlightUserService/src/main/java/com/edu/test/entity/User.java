@@ -47,6 +47,17 @@ public class User {
 		this.permanentAddress = permanentAddress;
 	}
 
+
+	public User(@NotEmpty String userName, String email, @Digits(integer = 10, fraction = 0) long phoneNumber,
+			String password, Address permanentAddress) {
+		super();
+		this.userName = userName;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.password = password;
+		this.permanentAddress = permanentAddress;
+	}
+
 	
 
 	
