@@ -35,10 +35,4 @@ public interface IFlightService {
 	List<Flight> getFlightsBySourceAndDestination(
 	        SourceLocation source,
 	        DestinationLocation destination);
-	
-	String updateSourceByFlightNumber(String flightNumber,SourceLocation source);
-	
-	public String updateDestinationByFlightNumber(
-	        String flightNumber,
-	        DestinationLocation destination);
 }
